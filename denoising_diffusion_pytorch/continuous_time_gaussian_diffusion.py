@@ -766,8 +766,10 @@ class ContinuousTimeGaussianDiffusion(nn.Module):
         if self.min_snr_loss_weight:
             snr = log_snr.exp()
             # weight = min(SNR, gamma) / SNR
-            # This down-weights high-noise (low-SNR) timesteps
-            loss_weight = snr.clamp(min = self.min_snr_gamma) / snr
+            # min-SNR (arxiv.org/abs/2303.09556): clip SNR to a MAXIMUM of gamma so
+            # high-SNR (low-noise) timesteps get down-weighted. Upstream fix: use
+            # clamp(max=...) here — clamp(min=...) inverts the intended weighting.
+            loss_weight = snr.clamp(max = self.min_snr_gamma) / snr
             losses = losses * loss_weight
 
         return losses.mean()
