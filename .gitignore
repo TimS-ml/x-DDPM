@@ -1,5 +1,14 @@
+AGENTS.md
+TODO.md
+PROGRESS.md
+autonomy/
+
 # Generation results
-results/
+results*/
+
+# experiment datasets and wandb logs
+experiments/**/data/
+wandb/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
